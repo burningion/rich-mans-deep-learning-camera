@@ -93,12 +93,13 @@ while True:
                     currentFrame = 0
 
                     print("preframes %i written" % birdFrames)
-                    prefillBuffer()
                     birdDetected = False
                     birdFrames = 0
                     while afterT.is_alive():
                         time.sleep(0)
                     print("done with thread")
+                    prefillBuffer()
+
                     break
 
 
