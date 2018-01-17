@@ -30,6 +30,16 @@ I've included some example outputs from detected birds in this repo. Good Luck!
 ![Single Bird](https://github.com/burningion/rich-mans-deep-learning-camera/raw/master/images/bird.gif)
 ![Bird Duel](https://github.com/burningion/rich-mans-deep-learning-camera/raw/master/images/birdduel.gif)
 
-# Changing What Get's Detected / Recorded, and How Long the Videos Are
+# Changing What Gets Detected / Recorded, and How Long the Videos Are
 
 Just change the `detectLabel` variable to somethinng out of the Cocos dataset ("person", for example), and then change the `beforeFrames` and `afterFrames`, in order to match your webcam's FPS and the length you'd like. (By default, it's 120, for 4 seconds of 30fps.)
+
+# Turning Image Sequences into Videos
+
+You can turn any of the images into videos using ffmpeg:
+
+```bash
+$ ffmpeg -i %05d.jpg  -profile:v high -level 4.0 -strict -2 out.mp4
+```
+
+I also added a script `joinImages.py`, that will create a directory and fill it with all the recorded image sequences. Just run it, and it should grab every bird directory sequentially, and then spit out a new directory with all of the images in order, ready to run the `ffmpeg` command above.
