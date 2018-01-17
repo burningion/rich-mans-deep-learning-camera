@@ -29,6 +29,7 @@ I've included some example outputs from detected birds in this repo. Good Luck!
 
 ![Single Bird](https://github.com/burningion/rich-mans-deep-learning-camera/raw/master/images/bird.gif)
 ![Bird Duel](https://github.com/burningion/rich-mans-deep-learning-camera/raw/master/images/birdduel.gif)
+![HD Bird](https://github.com/burningion/rich-mans-deep-learning-camera/raw/master/images/00238.jpg)
 
 # Changing What Gets Detected / Recorded, and How Long the Videos Are
 
