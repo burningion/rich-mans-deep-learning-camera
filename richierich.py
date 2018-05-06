@@ -10,6 +10,15 @@ import os
 import threading
 import time
 
+import subprocess
+import json
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-u', "--url", type=str, help="Url to hit to grab another image perspective")
+parsed = parser.parse_args()
+
 vs = VideoStream(resolution=(1280,720), framerate=30)
 vs.stream.stream.set(3, 1280)
 vs.stream.stream.set(4, 720)
@@ -27,7 +36,7 @@ afterFrames = 240
 skipFrames = 10
 
 # label to try detecting
-detectLabel = 'bird'
+detectLabel = "bird"
 
 birdDetected = False
 
@@ -47,7 +56,14 @@ def prefillBuffer():
         frame = theCam.read()
         #frame = resize(frame, width=512)
         theBuffer[:,:,:,i] = frame
-        
+
+def getHighRes(detectLabel, birdsSeen, url):
+    # gets a high res image from raspberry pi camera v2 server
+    # https://github.com/burningion/poor-mans-deep-learning-camera
+    # (optional!)
+    return subprocess.Popen(['wget', '-O', '%s%i/portrait.jpg' % (detectLabel, birdsSeen), url])
+
+
 prefillBuffer()
 
 currentFrame = 0
@@ -95,13 +111,19 @@ while True:
                         print('writing preframes')
                         cv2.imwrite('%s%i/%05d.jpg' % (detectLabel, birdsSeen, i), theBuffer[:,:,:,i])
                     currentFrame = 0
-
                     print("preframes %i written" % birdFrames)
                     birdDetected = False
                     birdFrames = 0
+                    if parsed.url:
+                        getHighRes(detectLabel, birdsSeen, parsed.url)
                     while afterT.is_alive():
                         time.sleep(0)
                     print("done with thread")
+                    with open('%s%i/metadata.json' % (detectLabel, birdsSeen), 'w') as metadata:
+                        det = {'detections': result, 'detection_time': time.ctime()}
+                        for detection in det['detections']:
+                            detection['confidence'] = float(detection['confidence'])
+                        json.dump(det, metadata)
                     prefillBuffer()
 
                     break
