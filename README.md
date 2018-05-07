@@ -44,3 +44,17 @@ $ ffmpeg -i %05d.jpg  -profile:v high -level 4.0 -strict -2 out.mp4
 ```
 
 I also added a script `joinImages.py`, that will create a directory and fill it with all the recorded image sequences. Just run it, and it should grab every bird directory sequentially, and then spit out a new directory with all of the images in order, ready to run the `ffmpeg` command above.
+
+# Getting Images from Videos for Training
+
+Once you've got a day's worth of video, you can quickly run through it for specific events you'd like to add to your dataset.
+
+Take the time from that point, and create a set of images to train with in [labelImg](https://github.com/tzutalin/labelImg) using the following command:
+
+```bash
+$ ffmpeg -ss 00:17:30 -i 03-02-2018.mp4 -vframes: 40 -q:v 2 -r 2 %05d.png
+```
+
+Where `00:17:30` is 17 minutes 30 seconds into your input video, `vframes` is the number of images you want, `-i` is the input video, and `-r` is the number of frames per second to take from the video.
+
+With these source images, you can bundle them all up for training later. 
