@@ -51,7 +51,7 @@ with open('image-list.txt', 'w') as imageList:
             imageList.write('file \'bird%i/%05d.jpg\'\n' % (i + 1, j))
         copy_metadata = "cp bird%i/metadata.json ./%s/" % (i + 1, today)
         subprocess.check_call(copy_metadata.split())
-        copy_portrait = "cp bird%i/portrait.jpg ./%s/" % (i + 1, today)
+        copy_portrait = "cp bird%i/portrait.jpg ./%s/portrait%05d.jpg" % (i + 1, today, i + 1)
         subprocess.check_call(copy_portrait.split())
 
 # create video file with current date with ffmpeg
