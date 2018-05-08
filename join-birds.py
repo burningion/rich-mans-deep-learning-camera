@@ -13,6 +13,8 @@ import subprocess, datetime
 import psutil
 import glob
 
+import json
+
 try:
     print("Killing existing detector process to free up memory")
     python_processes = [p.info for p in psutil.process_iter(attrs=['pid', 'name', 'memory_info']) if 'python' in p.info['name']]
@@ -37,6 +39,13 @@ subprocess.check_call(create_dir.split())
 print("Creating new directory for day")
 with open('image-list.txt', 'w') as imageList:
     for i in range(numBirdSeqs):
+        # if this isn't our current date, it's old laying around not deleted
+        with open("bird%i/metadata.json" % (i + 1)) as meta:
+            metadata = json.load(meta)
+            detection_date = datetime.datetime.strptime(metadata['detection_time'], "%c")
+            if detection_date.date() != datetime.datetime.now().date():
+                print("Skipping folder bird%i as it's older than today" % (i + 1))
+                break
         numCurrFiles = len(glob.glob('bird%i/00*.jpg' % (i + 1)))
         for j in range(numCurrFiles):
             imageList.write('file \'bird%i/%05d.jpg\'\n' % (i + 1, j))
