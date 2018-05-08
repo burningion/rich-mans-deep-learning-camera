@@ -49,12 +49,24 @@ I also added a script `joinImages.py`, that will create a directory and fill it 
 
 Once you've got a day's worth of video, you can quickly run through it for specific events you'd like to add to your dataset.
 
-Take the time from that point, and create a set of images to train with in [labelImg](https://github.com/tzutalin/labelImg) using the following command:
+Save these time points in a file called `timepoints.txt`, with timecodes like the following in hh:mm:ss format:
 
-```bash
-$ ffmpeg -ss 00:17:30 -i 03-02-2018.mp4 -vframes: 40 -q:v 2 -r 2 %05d.png
+```
+00:00:01
+00:04:03
+00:06:06
+00:17:25
+00:18:35
+00:18:50
+00:20:17
+00:23:30
+00:34:30
 ```
 
-Where `00:17:30` is 17 minutes 30 seconds into your input video, `vframes` is the number of images you want, `-i` is the input video, and `-r` is the number of frames per second to take from the video.
+Run the `extractTimePoints.py` Python script to extract images from these timepoints using `ffmpeg`:
 
-With these source images, you can bundle them all up for training later. 
+```
+$ python3 extractFromTimePoints.py -f <thedate>.mp4
+```
+
+This will create a new directory with images from the timepoints you've selected. You can then label and train these images in something like [labelImg](https://github.com/tzutalin/labelImg) for training.
