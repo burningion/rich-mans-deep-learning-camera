@@ -4,7 +4,8 @@
 # for viewing online.
 
 # To install and run at midnight every day, run crontab -e and add the line:
-# 0 23 * * * python3 /home/nvidia/rich-mans-deep-learning-camera/join-birds.py
+# 0 23 * * * cd /home/nvidia/rich-mans-deep-learning-camera/ && python3 /home/nvidia/rich-mans-deep-learning-camera/join-birds.py
+# Replace the above line with your home directory, and where this project is running.
 
 # First, kill the running python3 process to free up memory
 # Terrible hack checks for the python3 process using most memory and kills that
